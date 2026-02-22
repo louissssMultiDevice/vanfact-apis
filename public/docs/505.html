@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="505 - Internal Server Error | VanFact API">
+    <meta name="theme-color" content="#0f0f1a">
+    
+    <title>505 - Internal Server Error | VanFact API</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2912/2912780.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --dark: #0f0f1a;
+            --darker: #08080f;
+            --card: #16162a;
+            --border: #2e2e4a;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+        
+        .grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(239, 68, 68, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(239, 68, 68, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Error Container */
+        .error-container {
+            text-align: center;
+            max-width: 600px;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 505 Number */
+        .error-code {
+            font-size: clamp(6rem, 15vw, 12rem);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .error-code::before {
+            content: '505';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--error) 0%, var(--warning) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: blur(40px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+        
+        .error-code span {
+            background: linear-gradient(135deg, var(--error) 0%, var(--warning) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Content */
+        .error-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .error-message {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        /* Request Info */
+        .request-info {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            text-align: left;
+            border-left: 4px solid var(--error);
+        }
+        
+        .request-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .request-info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .request-info-label {
+            color: var(--text-muted);
+        }
+        
+        .request-info-value {
+            color: var(--error);
+        }
+        
+        .request-info-value.text {
+            color: var(--text);
+        }
+        
+        /* Error Detail */
+        .error-detail {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--error) 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.5);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--card);
+            border-color: var(--error);
+        }
+        
+        /* Warning Icon */
+        .warning-icon {
+            font-size: 4rem;
+            color: var(--warning);
+            margin-bottom: 1.5rem;
+            animation: pulse-icon 2s infinite;
+        }
+        
+        @keyframes pulse-icon {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 640px) {
+            .error-code {
+                font-size: 5rem;
+            }
+            
+            .request-info {
+                font-size: 0.8rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid"></div>
+    
+    <div class="error-container">
+        <div class="warning-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        
+        <div class="error-code">
+            <span>505</span>
+        </div>
+        
+        <h1 class="error-title">Internal Server Error</h1>
+        <p class="error-message">
+            Oops! Something went wrong on our end. We're working to fix this issue. 
+            Please try again later or contact support if the problem persists.
+        </p>
+        
+        <div class="request-info">
+            <div class="request-info-row">
+                <span class="request-info-label">URL</span>
+                <span class="request-info-value text" id="url">Loading...</span>
+            </div>
+            <div class="request-info-row">
+                <span class="request-info-label">STATUS</span>
+                <span class="request-info-value">505</span>
+            </div>
+            <div class="request-info-row">
+                <span class="request-info-label">TYPE</span>
+                <span class="request-info-value text">text/html; charset=utf-8</span>
+            </div>
+            <div class="request-info-row">
+                <span class="request-info-label">LATENCY</span>
+                <span class="request-info-value" id="latency">-- ms</span>
+            </div>
+            
+            <div class="error-detail">
+                <i class="fas fa-info-circle"></i>
+                Error ID: <span id="errorId">ERR_505_<span id="timestamp"></span></span>
+                <br>
+                <small>Please include this ID when reporting the issue</small>
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <button onclick="location.reload()" class="btn btn-primary">
+                <i class="fas fa-redo"></i>
+                Try Again
+            </button>
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-home"></i>
+                Back Home
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Display current URL
+        document.getElementById('url').textContent = window.location.href;
+        
+        // Generate error ID
+        document.getElementById('timestamp').textContent = Date.now().toString(36).toUpperCase();
+        
+        // Simulate latency
+        const startTime = performance.now();
+        window.addEventListener('load', () => {
+            const latency = Math.round(performance.now() - startTime);
+            document.getElementById('latency').textContent = latency + ' ms';
+        });
+    </script>
+</body>
+</html>
