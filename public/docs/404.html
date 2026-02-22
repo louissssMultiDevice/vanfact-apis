@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="404 - Page Not Found | VanFact API">
+    <meta name="theme-color" content="#0f0f1a">
+    
+    <title>404 - Page Not Found | VanFact API</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2912/2912780.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --dark: #0f0f1a;
+            --darker: #08080f;
+            --card: #16162a;
+            --border: #2e2e4a;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Background Effects */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        .grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Error Container */
+        .error-container {
+            text-align: center;
+            max-width: 600px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 404 Number */
+        .error-code {
+            font-size: clamp(6rem, 15vw, 12rem);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .error-code::before {
+            content: '404';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: blur(40px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+        
+        .error-code span {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            animation: glitch 3s infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+        
+        /* Content */
+        .error-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .error-message {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        /* Request Info */
+        .request-info {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+        
+        .request-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .request-info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .request-info-label {
+            color: var(--text-muted);
+        }
+        
+        .request-info-value {
+            color: var(--primary);
+        }
+        
+        .request-info-value.error {
+            color: #ef4444;
+        }
+        
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--card);
+            border-color: var(--primary);
+        }
+        
+        /* Floating Elements */
+        .floating {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating:nth-child(2) {
+            top: 20%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+        
+        .floating:nth-child(3) {
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 640px) {
+            .error-code {
+                font-size: 5rem;
+            }
+            
+            .request-info {
+                font-size: 0.8rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid"></div>
+    
+    <!-- Floating Decorations -->
+    <div class="floating"><i class="fas fa-cube fa-3x"></i></div>
+    <div class="floating"><i class="fas fa-code fa-3x"></i></div>
+    <div class="floating"><i class="fas fa-terminal fa-3x"></i></div>
+    
+    <div class="error-container">
+        <div class="error-code glitch">
+            <span>404</span>
+        </div>
+        
+        <h1 class="error-title">Page Not Found</h1>
+        <p class="error-message">
+            The endpoint you're looking for doesn't exist or has been moved. 
+            Please check the URL or return to documentation.
+        </p>
+        
+        <div class="request-info">
+            <div class="request-info-row">
+                <span class="request-info-label">URL</span>
+                <span class="request-info-value" id="url">Loading...</span>
+            </div>
+            <div class="request-info-row">
+                <span class="request-info-label">STATUS</span>
+                <span class="request-info-value error">404</span>
+            </div>
+            <div class="request-info-row">
+                <span class="request-info-label">TYPE</span>
+                <span class="request-info-value">text/html; charset=utf-8</span>
+            </div>
+            <div class="request-info-row">
+                <span class="request-info-label">LATENCY</span>
+                <span class="request-info-value" id="latency">-- ms</span>
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <a href="/docs/apis.html" class="btn btn-primary">
+                <i class="fas fa-book"></i>
+                Documentation
+            </a>
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-home"></i>
+                Back Home
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Display current URL
+        document.getElementById('url').textContent = window.location.href;
+        
+        // Simulate latency calculation
+        const startTime = performance.now();
+        window.addEventListener('load', () => {
+            const latency = Math.round(performance.now() - startTime);
+            document.getElementById('latency').textContent = latency + ' ms';
+        });
+    </script>
+</body>
+</html>
