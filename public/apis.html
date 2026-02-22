@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="VanFact API Documentation - Complete API Reference">
+    <meta name="theme-color" content="#0f0f1a">
+    
+    <title>API Documentation | VanFact API</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2912/2912780.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --card: #12121a;
+            --card-hover: #1a1a25;
+            --border: #2a2a3a;
+            --border-hover: #3a3a4f;
+            --text: #f8fafc;
+            --text-muted: #64748b;
+            --text-secondary: #94a3b8;
+            --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            --gradient-2: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Background */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .bg-effects::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+            animation: rotate 60s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo i {
+            font-size: 1.25rem;
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.6rem 1rem 0.6rem 2.75rem;
+            color: var(--text);
+            width: 320px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            width: 380px;
+            background: var(--card-hover);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .api-key-box {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid var(--border);
+            padding: 0.6rem 1.25rem;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .api-key-box:hover {
+            border-color: var(--primary);
+        }
+        
+        .header-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 1.1rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .header-link:hover {
+            color: var(--text);
+            background: var(--card);
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        /* Navigation - HORIZONTAL */
+        .top-nav {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 999;
+            padding: 0 2rem;
+        }
+        
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0.75rem 0;
+        }
+        
+        .nav-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-section {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding-right: 1.5rem;
+            margin-right: 1.5rem;
+            border-right: 1px solid var(--border);
+        }
+        
+        .nav-section:last-child {
+            border-right: none;
+            padding-right: 0;
+            margin-right: 0;
+        }
+        
+        .nav-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-right: 0.75rem;
+            white-space: nowrap;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+        
+        .nav-link:hover {
+            background: var(--card);
+            color: var(--text);
+            border-color: var(--border);
+        }
+        
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
+            color: var(--primary);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        .nav-link i {
+            font-size: 0.9rem;
+        }
+        
+        .method-badge {
+            font-size: 0.6rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-left: 0.25rem;
+        }
+        
+        .method-get { 
+            background: rgba(34, 197, 94, 0.15); 
+            color: var(--success); 
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 140px;
+            padding: 2rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .page-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumb a:hover {
+            color: var(--primary);
+        }
+        
+        .page-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+        }
+        
+        /* API Section */
+        .api-section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 160px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+        
+        .section-title-group h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .section-title-group p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .api-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+        
+        /* Playground */
+        .playground {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .playground-header {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05));
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .playground-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .playground-title i {
+            color: var(--accent);
+        }
+        
+        .playground-badge {
+            font-size: 0.75rem;
+            padding: 0.35rem 0.75rem;
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent);
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .playground-body {
+            padding: 1.75rem;
+        }
+        
+        .input-grid {
+            display: grid;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-grid.two-col {
+            grid-template-columns: 2fr 1fr;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .input-group label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .required {
+            color: var(--error);
+            font-size: 0.75rem;
+        }
+        
+        .optional {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+        
+        .input-group input,
+        .input-group select {
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.875rem 1rem;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .btn-send {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-send:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-send.loading i {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Result */
+        .result-section {
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            display: none;
+        }
+        
+        .result-section.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.875rem;
+        }
+        
+        .result-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.875rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .status-success {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+        }
+        
+        .status-error {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+        }
+        
+        .latency {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-icon {
+            background: var(--dark);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .btn-icon:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .result-box {
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .result-box pre {
+            padding: 1.25rem;
+            margin: 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            color: var(--text);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        /* Tables */
+        .params-section {
+            margin: 2rem 0;
+        }
+        
+        .section-subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .params-table-container {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--card);
+        }
+        
+        .params-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        
+        .params-table th {
+            background: var(--dark);
+            padding: 1rem 1.25rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .params-table td {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        
+        .params-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .param-name {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .param-type {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: var(--dark);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Code Block */
+        .code-section {
+            margin: 2rem 0;
+        }
+        
+        .code-block {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .code-header {
+            background: var(--dark);
+            padding: 0.875rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .code-lang {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .code-block pre {
+            padding: 1.5rem;
+            margin: 0;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--dark);
+        }
+        
+        /* Syntax Highlight */
+        .json-key { color: #93c5fd; }
+        .json-string { color: #86efac; }
+        .json-number { color: #fca5a5; }
+        .json-boolean { color: #fcd34d; }
+        .json-null { color: #d8b4fe; }
+        
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.05));
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .info-box i {
+            color: var(--accent);
+            font-size: 1.25rem;
+            margin-top: 0.125rem;
+        }
+        
+        /* Footer */
+        .docs-footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        
+        .docs-footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 1rem;
+            }
+            
+            .search-container {
+                display: none;
+            }
+            
+            .api-key-box span {
+                display: none;
+            }
+            
+            .top-nav {
+                padding: 0 1rem;
+                top: 70px;
+            }
+            
+            .nav-section {
+                padding-right: 1rem;
+                margin-right: 1rem;
+            }
+            
+            .nav-label {
+                display: none;
+            }
+            
+            .main-content {
+                margin-top: 130px;
+                padding: 1.5rem;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .input-grid.two-col {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-effects"></div>
+    <div class="grid-pattern"></div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/" class="logo">
+                <i class="fas fa-rocket"></i>
+                VanFact API
+            </a>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-box" placeholder="Search endpoints..." id="searchInput">
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="api-key-box" onclick="copyApiKey()">
+                <i class="fas fa-key"></i>
+                <span>ndii</span>
+                <i class="fas fa-copy" style="font-size: 0.75rem;"></i>
+            </div>
+            <a href="/" class="header-link">
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
+    </header>
+    
+    <!-- Top Navigation - HORIZONTAL -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="nav-section">
+                <span class="nav-label">Start</span>
+                <a href="#introduction" class="nav-link active"><i class="fas fa-info-circle"></i> Intro</a>
+                <a href="#authentication" class="nav-link"><i class="fas fa-lock"></i> Auth</a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-label">Info</span>
+                <a href="#planet" class="nav-link"><i class="fas fa-globe"></i> Planet <span class="method-badge method-get">GET</span></a>
+                <a href="#prayreminder" class="nav-link"><i class="fas fa-mosque"></i> Pray <span class="method-badge method-get">GET</span></a>
+                <a href="#deepseek" class="nav-link"><i class="fas fa-brain"></i> AI <span class="method-badge method-get">GET</span></a>
+                <a href="#status" class="nav-link"><i class="fas fa-heartbeat"></i> Status <span class="method-badge method-get">GET</span></a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-label">Download</span>
+                <a href="#tiktok" class="nav-link"><i class="fas fa-video"></i> TikTok <span class="method-badge method-get">GET</span></a>
+                <a href="#instagram" class="nav-link"><i class="fas fa-camera"></i> IG <span class="method-badge method-get">GET</span></a>
+                <a href="#youtube" class="nav-link"><i class="fas fa-play-circle"></i> YT <span class="method-badge method-get">GET</span></a>
+                <a href="#facebook" class="nav-link"><i class="fab fa-facebook"></i> FB <span class="method-badge method-get">GET</span></a>
+                <a href="#twitter" class="nav-link"><i class="fab fa-twitter"></i> X <span class="method-badge method-get">GET</span></a>
+            </div>
+            <div class="nav-section">
+                <span class="nav-label">Other</span>
+                <a href="#spotify" class="nav-link"><i class="fab fa-spotify"></i> Spotify <span class="method-badge method-get">GET</span></a>
+                <a href="#mediafire" class="nav-link"><i class="fas fa-cloud-download-alt"></i> MF <span class="method-badge method-get">GET</span></a>
+                <a href="#search" class="nav-link"><i class="fas fa-search"></i> Search <span class="method-badge method-get">GET</span></a>
+                <a href="#fetch" class="nav-link"><i class="fas fa-globe"></i> Fetch <span class="method-badge method-get">GET</span></a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <div class="breadcrumb">
+                <a href="/">Home</a>
+                <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
+                <span>Documentation</span>
+            </div>
+            <h1>API Reference</h1>
+            <p>Complete documentation with 13 endpoints. Test directly in your browser.</p>
+        </div>
+        
+        <!-- Introduction -->
+        <section class="api-section" id="introduction">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-info-circle"></i></div>
+                <div class="section-title-group">
+                    <h2>Introduction</h2>
+                    <p>Get started with VanFact API</p>
+                </div>
+            </div>
+            
+            <p class="api-description">
+                VanFact API adalah layanan REST API yang menyediakan 13 endpoint untuk kebutuhan aplikasi modern.
+                Dibangun dengan performa tinggi, rate limiting, caching, dan mudah diintegrasikan.
+            </p>
+            
+            <div class="info-box">
+                <i class="fas fa-lightbulb"></i>
+                <div>
+                    <div style="font-weight: 600; margin-bottom: 0.25rem;">Base URL</div>
+                    <code style="background: rgba(6, 182, 212, 0.2); padding: 0.25rem 0.5rem; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', monospace;">https://your-domain.vercel.app/api</code>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Authentication -->
+        <section class="api-section" id="authentication">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-lock"></i></div>
+                <div class="section-title-group">
+                    <h2>Authentication</h2>
+                    <p>Secure your API requests</p>
+                </div>
+            </div>
+            
+            <p class="api-description">
+                Semua endpoint memerlukan API Key untuk autentikasi. Sertakan API Key pada header setiap request.
+                Rate limit: 10-60 requests per minute tergantung endpoint.
+            </p>
+            
+            <div class="code-section">
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">Headers</span>
+                        <button class="btn-icon" onclick="copyCode(this)"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <pre><code>apikey: ndii</code></pre>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Planet API -->
+        <section class="api-section" id="planet">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-globe"></i></div>
+                <div class="section-title-group">
+                    <h2>Planet</h2>
+                    <p>Planetary information & visualization</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-grid two-col">
+                        <div class="input-group">
+                            <label>Planet Name <span class="optional">optional</span></label>
+                            <input type="text" id="planetName" placeholder="bumi, mars, jupiter...">
+                        </div>
+                        <div class="input-group">
+                            <label>Format</label>
+                            <select id="planetFormat">
+                                <option value="json">JSON Only</option>
+                                <option value="image">With Image</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('planet')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="planetResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="planetStatus"></span>
+                                <span class="latency" id="planetLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('planet')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="planetOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="params-section">
+                <h3 class="section-subtitle"><i class="fas fa-sliders-h"></i> Parameters</h3>
+                <div class="params-table-container">
+                    <table class="params-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="param-name">name</span></td>
+                                <td><span class="param-type">string</span></td>
+                                <td><span class="optional">Optional</span></td>
+                                <td>Nama planet (merkurius, venus, bumi, mars, jupiter, saturnus)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="param-name">image</span></td>
+                                <td><span class="param-type">boolean</span></td>
+                                <td><span class="optional">Optional</span></td>
+                                <td>Return image PNG (true/false)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="param-name">list</span></td>
+                                <td><span class="param-type">boolean</span></td>
+                                <td><span class="optional">Optional</span></td>
+                                <td>List semua planet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Pray Reminder -->
+        <section class="api-section" id="prayreminder">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-mosque"></i></div>
+                <div class="section-title-group">
+                    <h2>Pray Reminder</h2>
+                    <p>Daily prayer schedule by city</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label>City Name <span class="required">required</span></label>
+                        <input type="text" id="prayCity" placeholder="jakarta, surabaya, bandung...">
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('prayreminder')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="prayResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="prayStatus"></span>
+                                <span class="latency" id="prayLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('pray')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="prayOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- DeepSeek AI -->
+        <section class="api-section" id="deepseek">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-brain"></i></div>
+                <div class="section-title-group">
+                    <h2>DeepSeek AI</h2>
+                    <p>AI text generation</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label>Prompt <span class="required">required</span></label>
+                        <input type="text" id="deepseekPrompt" placeholder="Enter your prompt...">
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('deepseek')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="deepResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="deepStatus"></span>
+                                <span class="latency" id="deepLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('deep')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="deepOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- TikTok -->
+        <section class="api-section" id="tiktok">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-video"></i></div>
+                <div class="section-title-group">
+                    <h2>TikTok Downloader</h2>
+                    <p>Download without watermark</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label>TikTok URL <span class="required">required</span></label>
+                        <input type="text" id="tiktokUrl" placeholder="https://vt.tiktok.com/xxxxx">
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('tiktok')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="tiktokResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="tiktokStatus"></span>
+                                <span class="latency" id="tiktokLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('tiktok')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="tiktokOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Instagram -->
+        <section class="api-section" id="instagram">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-camera"></i></div>
+                <div class="section-title-group">
+                    <h2>Instagram Downloader</h2>
+                    <p>Download posts & reels</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label>Instagram URL <span class="required">required</span></label>
+                        <input type="text" id="igUrl" placeholder="https://instagram.com/p/xxxxx">
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('instagram')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="igResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="igStatus"></span>
+                                <span class="latency" id="igLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('ig')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="igOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- YouTube -->
+        <section class="api-section" id="youtube">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-play-circle"></i></div>
+                <div class="section-title-group">
+                    <h2>YouTube Info</h2>
+                    <p>Video information & formats</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label>YouTube URL <span class="required">required</span></label>
+                        <input type="text" id="ytUrl" placeholder="https://youtube.com/watch?v=xxxxx">
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('youtube')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="ytResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="ytStatus"></span>
+                                <span class="latency" id="ytLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('yt')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="ytOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Facebook -->
+        <section class="api-section" id="facebook">
+            <div class="section-header">
+                <div class="section-icon"><i class="fab fa-facebook"></i></div>
+                <div class="section-title-group">
+                    <h2>Facebook Downloader</h2>
+                    <p>Download videos</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label>Facebook URL <span class="required">required</span></label>
+                        <input type="text" id="fbUrl" placeholder="https://facebook.com/watch?v=xxxxx">
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('facebook')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="fbResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="fbStatus"></span>
+                                <span class="latency" id="fbLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('fb')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="fbOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Twitter/X -->
+        <section class="api-section" id="twitter">
+            <div class="section-header">
+                <div class="section-icon"><i class="fab fa-twitter"></i></div>
+                <div class="section-title-group">
+                    <h2>Twitter/X Downloader</h2>
+                    <p>Download media from tweets</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label>Twitter/X URL <span class="required">required</span></label>
+                        <input type="text" id="twitterUrl" placeholder="https://x.com/user/status/xxxxx">
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('twitter')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="twitterResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="twitterStatus"></span>
+                                <span class="latency" id="twitterLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('twitter')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="twitterOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Spotify -->
+        <section class="api-section" id="spotify">
+            <div class="section-header">
+                <div class="section-icon"><i class="fab fa-spotify"></i></div>
+                <div class="section-title-group">
+                    <h2>Spotify Info</h2>
+                    <p>Track information</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label>Spotify Track URL <span class="required">required</span></label>
+                        <input type="text" id="spotifyUrl" placeholder="https://open.spotify.com/track/xxxxx">
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('spotify')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="spotifyResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="spotifyStatus"></span>
+                                <span class="latency" id="spotifyLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('spotify')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="spotifyOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- MediaFire -->
+        <section class="api-section" id="mediafire">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-cloud-download-alt"></i></div>
+                <div class="section-title-group">
+                    <h2>MediaFire Downloader</h2>
+                    <p>Direct download links</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label>MediaFire URL <span class="required">required</span></label>
+                        <input type="text" id="mfUrl" placeholder="https://mediafire.com/file/xxxxx">
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('mediafire')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="mfResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="mfStatus"></span>
+                                <span class="latency" id="mfLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('mf')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="mfOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Google Search -->
+        <section class="api-section" id="search">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-search"></i></div>
+                <div class="section-title-group">
+                    <h2>Google Search</h2>
+                    <p>Web search results</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label>Search Query <span class="required">required</span></label>
+                        <input type="text" id="searchQuery" placeholder="Enter search query...">
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('search')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="searchResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="searchStatus"></span>
+                                <span class="latency" id="searchLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('search')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="searchOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Fetch HTML -->
+        <section class="api-section" id="fetch">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-globe"></i></div>
+                <div class="section-title-group">
+                    <h2>Fetch HTML</h2>
+                    <p>Generic web scraper</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <div class="input-group" style="margin-bottom: 1.5rem;">
+                        <label>URL <span class="required">required</span></label>
+                        <input type="text" id="fetchUrl" placeholder="https://example.com">
+                    </div>
+                    <button class="btn-send" onclick="testEndpoint('fetch')">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                    
+                    <div class="result-section" id="fetchResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="fetchStatus"></span>
+                                <span class="latency" id="fetchLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('fetch')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="fetchOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Status -->
+        <section class="api-section" id="status">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-heartbeat"></i></div>
+                <div class="section-title-group">
+                    <h2>System Status</h2>
+                    <p>Realtime monitoring</p>
+                </div>
+            </div>
+            
+            <div class="playground">
+                <div class="playground-header">
+                    <div class="playground-title"><i class="fas fa-flask"></i> Interactive Playground</div>
+                    <span class="playground-badge">Live</span>
+                </div>
+                <div class="playground-body">
+                    <button class="btn-send" onclick="testEndpoint('status')">
+                        <i class="fas fa-paper-plane"></i> Check Status
+                    </button>
+                    
+                    <div class="result-section" id="statusResult">
+                        <div class="result-header">
+                            <div class="result-meta">
+                                <span class="status-badge" id="statusStatus"></span>
+                                <span class="latency" id="statusLatency"></span>
+                            </div>
+                            <div class="result-actions">
+                                <button class="btn-icon" onclick="copyResult('status')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>
+                        <div class="result-box"><pre id="statusOutput"></pre></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Error Handling -->
+        <section class="api-section" id="errors">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="section-title-group">
+                    <h2>Error Handling</h2>
+                    <p>HTTP status codes</p>
+                </div>
+            </div>
+            
+            <div class="params-table-container">
+                <table class="params-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Status</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">200</span></td>
+                            <td style="color: var(--success);">OK</td>
+                            <td>Success</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">400</span></td>
+                            <td style="color: var(--warning);">Bad Request</td>
+                            <td>Invalid parameter</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">401</span></td>
+                            <td style="color: var(--error);">Unauthorized</td>
+                            <td>Invalid API key</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">404</span></td>
+                            <td style="color: var(--error);">Not Found</td>
+                            <td>Endpoint not found</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">429</span></td>
+                            <td style="color: var(--warning);">Too Many Requests</td>
+                            <td>Rate limit exceeded</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">500</span></td>
+                            <td style="color: var(--error);">Server Error</td>
+                            <td>Internal error</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <footer class="docs-footer">
+            <p>© 2026 VanFact API. By <strong>Ndii</strong></p>
+            <p style="margin-top: 0.5rem;">
+                <a href="/">Home</a> • 
+                <a href="https://github.com/louisssmultidevice" target="_blank">GitHub</a> • 
+                <a href="#">Support</a>
+            </p>
+        </footer>
+    </main>
+    
+    <script>
+        const BASE_URL = window.location.origin + '/api';
+        
+        function copyApiKey() {
+            navigator.clipboard.writeText('ndii');
+            const box = document.querySelector('.api-key-box');
+            const original = box.innerHTML;
+            box.innerHTML = '<i class="fas fa-check" style="color: var(--success);"></i> <span>Copied!</span>';
+            setTimeout(() => box.innerHTML = original, 2000);
+        }
+        
+        function copyCode(btn) {
+            const code = btn.closest('.code-block').querySelector('pre').textContent;
+            navigator.clipboard.writeText(code);
+            const icon = btn.querySelector('i');
+            icon.className = 'fas fa-check';
+            setTimeout(() => icon.className = 'fas fa-copy', 2000);
+        }
+        
+        function copyResult(id) {
+            const output = document.getElementById(id + 'Output').textContent;
+            navigator.clipboard.writeText(output);
+            const btn = event.currentTarget;
+            const icon = btn.querySelector('i');
+            icon.className = 'fas fa-check';
+            setTimeout(() => icon.className = 'fas fa-copy', 2000);
+        }
+        
+        async function testEndpoint(endpoint) {
+            const btn = event.currentTarget;
+            const originalContent = btn.innerHTML;
+            btn.classList.add('loading');
+            btn.innerHTML = '<i class="fas fa-circle-notch"></i> Sending...';
+            btn.disabled = true;
+            
+            let url = `${BASE_URL}/${endpoint}`;
+            let resultId = endpoint;
+            let params = new URLSearchParams();
+            
+            switch(endpoint) {
+                case 'planet':
+                    const planetName = document.getElementById('planetName')?.value.trim();
+                    const planetFormat = document.getElementById('planetFormat')?.value;
+                    if (planetName) params.append('name', planetName);
+                    if (planetFormat === 'image') params.append('image', 'true');
+                    if (params.toString()) url += '?' + params.toString();
+                    break;
+                case 'prayreminder':
+                    const city = document.getElementById('prayCity')?.value.trim();
+                    if (!city) { showError('pray', 'City required'); resetBtn(btn, originalContent); return; }
+                    url += `?city=${encodeURIComponent(city)}`;
+                    resultId = 'pray';
+                    break;
+                case 'deepseek':
+                    const prompt = document.getElementById('deepseekPrompt')?.value.trim();
+                    if (!prompt) { showError('deep', 'Prompt required'); resetBtn(btn, originalContent); return; }
+                    url += `?prompt=${encodeURIComponent(prompt)}`;
+                    resultId = 'deep';
+                    break;
+                case 'tiktok':
+                    const tiktokUrl = document.getElementById('tiktokUrl')?.value.trim();
+                    if (!tiktokUrl) { showError('tiktok', 'URL required'); resetBtn(btn, originalContent); return; }
+                    url += `?url=${encodeURIComponent(tiktokUrl)}`;
+                    break;
+                case 'instagram':
+                    const igUrl = document.getElementById('igUrl')?.value.trim();
+                    if (!igUrl) { showError('ig', 'URL required'); resetBtn(btn, originalContent); return; }
+                    url += `?url=${encodeURIComponent(igUrl)}`;
+                    resultId = 'ig';
+                    break;
+                case 'youtube':
+                    const ytUrl = document.getElementById('ytUrl')?.value.trim();
+                    if (!ytUrl) { showError('yt', 'URL required'); resetBtn(btn, originalContent); return; }
+                    url += `?url=${encodeURIComponent(ytUrl)}`;
+                    resultId = 'yt';
+                    break;
+                case 'facebook':
+                    const fbUrl = document.getElementById('fbUrl')?.value.trim();
+                    if (!fbUrl) { showError('fb', 'URL required'); resetBtn(btn, originalContent); return; }
+                    url += `?url=${encodeURIComponent(fbUrl)}`;
+                    resultId = 'fb';
+                    break;
+                case 'twitter':
+                    const twitterUrl = document.getElementById('twitterUrl')?.value.trim();
+                    if (!twitterUrl) { showError('twitter', 'URL required'); resetBtn(btn, originalContent); return; }
+                    url += `?url=${encodeURIComponent(twitterUrl)}`;
+                    break;
+                case 'spotify':
+                    const spotifyUrl = document.getElementById('spotifyUrl')?.value.trim();
+                    if (!spotifyUrl) { showError('spotify', 'URL required'); resetBtn(btn, originalContent); return; }
+                    url += `?url=${encodeURIComponent(spotifyUrl)}`;
+                    break;
+                case 'mediafire':
+                    const mfUrl = document.getElementById('mfUrl')?.value.trim();
+                    if (!mfUrl) { showError('mf', 'URL required'); resetBtn(btn, originalContent); return; }
+                    url += `?url=${encodeURIComponent(mfUrl)}`;
+                    resultId = 'mf';
+                    break;
+                case 'search':
+                    const query = document.getElementById('searchQuery')?.value.trim();
+                    if (!query) { showError('search', 'Query required'); resetBtn(btn, originalContent); return; }
+                    url += `?q=${encodeURIComponent(query)}`;
+                    break;
+                case 'fetch':
+                    const fetchUrl = document.getElementById('fetchUrl')?.value.trim();
+                    if (!fetchUrl) { showError('fetch', 'URL required'); resetBtn(btn, originalContent); return; }
+                    url += `?url=${encodeURIComponent(fetchUrl)}`;
+                    break;
+            }
+            
+            const startTime = performance.now();
+            
+            try {
+                const response = await fetch(url, { headers: { 'apikey': 'ndii' } });
+                const latency = Math.round(performance.now() - startTime);
+                const data = await response.json();
+                displayResult(resultId, response.status, latency, data, response.ok);
+            } catch (error) {
+                showError(resultId, error.message);
+            } finally {
+                resetBtn(btn, originalContent);
+            }
+        }
+        
+        function resetBtn(btn, content) {
+            btn.classList.remove('loading');
+            btn.innerHTML = content;
+            btn.disabled = false;
+        }
+        
+        function displayResult(id, status, latency, data, isSuccess) {
+            const resultSection = document.getElementById(id + 'Result');
+            const statusBadge = document.getElementById(id + 'Status');
+            const latencyEl = document.getElementById(id + 'Latency');
+            const output = document.getElementById(id + 'Output');
+            
+            resultSection.classList.add('show');
+            statusBadge.className = 'status-badge ' + (isSuccess ? 'status-success' : 'status-error');
+            statusBadge.innerHTML = `<i class="fas fa-${isSuccess ? 'check' : 'times'}-circle"></i> ${status} ${isSuccess ? 'OK' : 'Error'}`;
+            latencyEl.textContent = `${latency}ms`;
+            output.innerHTML = syntaxHighlight(JSON.stringify(data, null, 2));
+        }
+        
+        function showError(id, message) {
+            const resultSection = document.getElementById(id + 'Result');
+            const statusBadge = document.getElementById(id + 'Status');
+            const latencyEl = document.getElementById(id + 'Latency');
+            const output = document.getElementById(id + 'Output');
+            
+            resultSection.classList.add('show');
+            statusBadge.className = 'status-badge status-error';
+            statusBadge.innerHTML = '<i class="fas fa-times-circle"></i> Error';
+            latencyEl.textContent = '0ms';
+            
+            const errorData = { status: false, message: message, timestamp: new Date().toISOString() };
+            output.innerHTML = syntaxHighlight(JSON.stringify(errorData, null, 2));
+        }
+        
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                let cls = 'json-number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) cls = 'json-key';
+                    else cls = 'json-string';
+                } else if (/true|false/.test(match)) cls = 'json-boolean';
+                else if (/null/.test(match)) cls = 'json-null';
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+        
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            const sections = document.querySelectorAll('.api-section');
+            
+            sections.forEach(section => {
+                const text = section.textContent.toLowerCase();
+                const id = section.getAttribute('id');
+                if (id === 'introduction' || id === 'authentication' || id === 'errors') return;
+                
+                if (term === '') {
+                    section.style.display = 'block';
+                    section.style.opacity = '1';
+                } else if (text.includes(term)) {
+                    section.style.display = 'block';
+                    section.style.opacity = '1';
+                } else {
+                    section.style.opacity = '0.3';
+                }
+            });
+        });
+        
+        // Active nav on scroll
+        const sections = document.querySelectorAll('.api-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
