@@ -14,7 +14,5 @@
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type, apikey" }
       ]
     }
-  ],
-  "env": {
-    "ADMIN_KEY": "@vanfact"
-  }
+  ]
+}
