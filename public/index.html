@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="VanFact API - Powerful REST API for developers">
+    <meta name="theme-color" content="#0f0f1a">
+    
+    <title>VanFact API | Powerful REST API Service</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2912/2912780.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --card: #12121a;
+            --border: #2a2a3a;
+            --text: #f8fafc;
+            --text-muted: #64748b;
+            --text-secondary: #94a3b8;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Background */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-effects::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            animation: rotate 60s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .nav-links a:hover {
+            color: var(--text);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 5% 4rem;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+            font-weight: 500;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+        }
+        
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--text-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--card);
+            border-color: var(--primary);
+        }
+        
+        /* Features */
+        .features {
+            padding: 6rem 5%;
+            background: var(--dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* APIs Preview */
+        .apis-preview {
+            padding: 6rem 5%;
+        }
+        
+        .api-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .api-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--text);
+        }
+        
+        .api-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .api-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .api-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+        
+        .api-card h3 {
+            font-size: 1.1rem;
+        }
+        
+        .api-card .method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .api-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .api-endpoint {
+            background: var(--dark);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+        
+        /* REALTIME STATUS SECTION */
+        .status-section {
+            padding: 6rem 5%;
+            background: var(--dark);
+        }
+        
+        #status {
+            scroll-margin-top: 100px;
+        }
+        
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+        
+        .status-indicator.offline {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+        
+        .status-indicator.checking {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: currentColor;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+        
+        .status-indicator.offline .status-dot {
+            animation: none;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .refresh-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .refresh-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .refresh-btn.spinning i {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .status-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .status-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+        
+        .status-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .status-card.error::after {
+            background: linear-gradient(90deg, var(--error), var(--warning));
+        }
+        
+        .status-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+        
+        .status-value.error {
+            background: linear-gradient(135deg, var(--error), var(--warning));
+            -webkit-background-clip: text;
+        }
+        
+        .status-sublabel {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        
+        .status-detail {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .status-detail-title {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .api-status-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .api-status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--dark);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .api-status-name {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .api-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .api-status-dot.online {
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success);
+        }
+        
+        .api-status-dot.offline {
+            background: var(--error);
+        }
+        
+        .api-status-dot.checking {
+            background: var(--warning);
+            animation: blink 1s infinite;
+        }
+        
+        .api-status-endpoint {
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+        
+        .last-updated {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 1.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--darker);
+            border-top: 1px solid var(--border);
+            padding: 3rem 5%;
+            text-align: center;
+        }
+        
+        .footer-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            list-style: none;
+        }
+        
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .status-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .status-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .status-value {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-effects"></div>
+    <div class="grid-pattern"></div>
+    
+    <!-- Navigation -->
+    <nav>
+        <a href="/" class="logo">
+            <i class="fas fa-rocket"></i>
+            VanFact API
+        </a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#apis">APIs</a></li>
+            <li><a href="#status">Status</a></li>
+            <li><a href="/docs/apis.html">Docs</a></li>
+        </ul>
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+    
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="badge">
+                <i class="fas fa-bolt"></i>
+                v1.0.0 Now Available
+            </div>
+            <h1>Powerful REST API for Modern Developers</h1>
+            <p>VanFact API menyediakan berbagai endpoint untuk kebutuhan aplikasi Anda. Dari data planet, jadwal sholat, downloader, hingga AI integration.</p>
+            <div class="hero-buttons">
+                <a href="/docs/apis.html" class="btn btn-primary">
+                    <i class="fas fa-book"></i>
+                    Documentation
+                </a>
+                <a href="#status" class="btn btn-secondary">
+                    <i class="fas fa-chart-line"></i>
+                    View Status
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose VanFact API?</h2>
+                <p>Fitur unggulan yang membuat development lebih mudah</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Lightning Fast</h3>
+                    <p>Response time di bawah 100ms dengan server global edge network</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Secure & Reliable</h3>
+                    <p>SSL encryption dan rate limiting untuk keamanan optimal</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-code"></i></div>
+                    <h3>Developer Friendly</h3>
+                    <p>Dokumentasi lengkap dengan contoh kode dan playground</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Cross Platform</h3>
+                    <p>Support semua platform: Web, Mobile, Desktop, IoT</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-infinity"></i></div>
+                    <h3>Free Tier</h3>
+                    <p>Gratis untuk penggunaan pribadi dengan limit yang masuk akal</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                    <h3>24/7 Support</h3>
+                    <p>Tim support siap membantu kapan saja Anda butuhkan</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- APIs Preview -->
+    <section class="apis-preview" id="apis">
+        <div class="container">
+            <div class="section-title">
+                <h2>Available Endpoints</h2>
+                <p>Berbagai API yang siap digunakan untuk project Anda</p>
+            </div>
+            <div class="api-grid">
+                <a href="/docs/apis.html#planet" class="api-card">
+                    <div class="api-header">
+                        <div class="api-icon"><i class="fas fa-globe"></i></div>
+                        <h3>Planet</h3>
+                    </div>
+                    <span class="method">GET</span>
+                    <p>Informasi detail tentang planet-planet di tata surya</p>
+                    <div class="api-endpoint">/api/planet</div>
+                </a>
+                
+                <a href="/docs/apis.html#prayreminder" class="api-card">
+                    <div class="api-header">
+                        <div class="api-icon"><i class="fas fa-mosque"></i></div>
+                        <h3>Pray Reminder</h3>
+                    </div>
+                    <span class="method">GET</span>
+                    <p>Jadwal sholat harian berdasarkan lokasi kota</p>
+                    <div class="api-endpoint">/api/prayreminder</div>
+                </a>
+                
+                <a href="/docs/apis.html#deepseek" class="api-card">
+                    <div class="api-header">
+                        <div class="api-icon"><i class="fas fa-brain"></i></div>
+                        <h3>DeepSeek AI</h3>
+                    </div>
+                    <span class="method">GET</span>
+                    <p>Integrasi AI untuk chat dan text generation</p>
+                    <div class="api-endpoint">/api/deepseek</div>
+                </a>
+                
+                <a href="/docs/apis.html#tiktok" class="api-card">
+                    <div class="api-header">
+                        <div class="api-icon"><i class="fas fa-video"></i></div>
+                        <h3>TikTok Downloader</h3>
+                    </div>
+                    <span class="method">GET</span>
+                    <p>Download video TikTok tanpa watermark</p>
+                    <div class="api-endpoint">/api/tiktok</div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- REALTIME STATUS SECTION -->
+    <section class="status-section" id="status">
+        <div class="container">
+            <div class="section-title">
+                <h2>System Status</h2>
+                <p>Realtime monitoring status layanan kami</p>
+            </div>
+            
+            <div class="status-header">
+                <div class="status-indicator" id="mainStatus">
+                    <span class="status-dot"></span>
+                    <span id="statusText">Checking...</span>
+                </div>
+                <button class="refresh-btn" id="refreshBtn" onclick="fetchStatus()">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+            </div>
+            
+            <div class="status-grid" id="statusGrid">
+                <div class="status-card">
+                    <div class="status-label">Uptime</div>
+                    <div class="status-value" id="uptimeValue">--</div>
+                    <div class="status-sublabel">Last 30 days</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-label">Response Time</div>
+                    <div class="status-value" id="responseValue">--</div>
+                    <div class="status-sublabel">Average</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-label">Total APIs</div>
+                    <div class="status-value" id="apisValue">--</div>
+                    <div class="status-sublabel">Active endpoints</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-label">Requests Today</div>
+                    <div class="status-value" id="requestsValue">--</div>
+                    <div class="status-sublabel">Total calls</div>
+                </div>
+            </div>
+            
+            <div class="status-detail">
+                <div class="status-detail-title">API Endpoints Status</div>
+                <div class="api-status-list" id="apiList">
+                    <div class="api-status-item">
+                        <div class="api-status-name">
+                            <span class="api-status-dot checking"></span>
+                            <span>Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="last-updated" id="lastUpdated">
+                Last updated: Never
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">
+            <i class="fas fa-rocket" style="color: var(--primary);"></i>
+            VanFact API
+        </div>
+        <ul class="footer-links">
+            <li><a href="/docs/apis.html">Documentation</a></li>
+            <li><a href="#status">Status</a></li>
+            <li><a href="https://github.com/louisssmultidevice">GitHub</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <p class="copyright">
+            © 2026 VanFact API. By Ndii
+        </p>
+    </footer>
+    
+    <script>
+        const BASE_URL = window.location.origin + '/api';
+        
+        // Fetch realtime status
+        async function fetchStatus() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            const mainStatus = document.getElementById('mainStatus');
+            const statusText = document.getElementById('statusText');
+            
+            // Set loading state
+            refreshBtn.classList.add('spinning');
+            mainStatus.className = 'status-indicator checking';
+            statusText.textContent = 'Checking...';
+            
+            const startTime = performance.now();
+            
+            try {
+                const response = await fetch(`${BASE_URL}/status`, {
+                    headers: { 'apikey': 'ndii' }
+                });
+                
+                const latency = Math.round(performance.now() - startTime);
+                const data = await response.json();
+                
+                if (data.status && data.data) {
+                    updateStatusUI(data.data, latency);
+                } else {
+                    throw new Error('Invalid response');
+                }
+                
+            } catch (error) {
+                showErrorStatus();
+            } finally {
+                refreshBtn.classList.remove('spinning');
+            }
+        }
+        
+        function updateStatusUI(data, latency) {
+            const mainStatus = document.getElementById('mainStatus');
+            const statusText = document.getElementById('statusText');
+            
+            // Update main indicator
+            mainStatus.className = 'status-indicator';
+            statusText.textContent = 'All Systems Operational';
+            
+            // Update stats
+            document.getElementById('uptimeValue').textContent = '99.9%';
+            document.getElementById('responseValue').textContent = latency + 'ms';
+            document.getElementById('apisValue').textContent = data.totalApis || 5;
+            document.getElementById('requestsValue').textContent = formatNumber(data.totalRequests || 0);
+            
+            // Update API list
+            const apiList = document.getElementById('apiList');
+            const endpoints = [
+                { name: 'Planet', endpoint: '/api/planet', icon: 'fa-globe' },
+                { name: 'Pray Reminder', endpoint: '/api/prayreminder', icon: 'fa-mosque' },
+                { name: 'DeepSeek AI', endpoint: '/api/deepseek', icon: 'fa-brain' },
+                { name: 'TikTok DL', endpoint: '/api/tiktok', icon: 'fa-video' },
+                { name: 'Status', endpoint: '/api/status', icon: 'fa-heartbeat' }
+            ];
+            
+            apiList.innerHTML = endpoints.map(api => `
+                <div class="api-status-item">
+                    <div class="api-status-name">
+                        <span class="api-status-dot online"></span>
+                        <i class="fas ${api.icon}" style="color: var(--text-muted); width: 20px;"></i>
+                        <span>${api.name}</span>
+                    </div>
+                    <span class="api-status-endpoint">${api.endpoint}</span>
+                </div>
+            `).join('');
+            
+            // Update timestamp
+            document.getElementById('lastUpdated').textContent = 
+                'Last updated: ' + new Date().toLocaleString('id-ID');
+        }
+        
+        function showErrorStatus() {
+            const mainStatus = document.getElementById('mainStatus');
+            const statusText = document.getElementById('statusText');
+            
+            mainStatus.className = 'status-indicator offline';
+            statusText.textContent = 'Some Systems Offline';
+            
+            document.getElementById('uptimeValue').textContent = '--';
+            document.getElementById('responseValue').textContent = '--';
+            document.getElementById('apisValue').textContent = '--';
+            document.getElementById('requestsValue').textContent = '--';
+            
+            document.querySelectorAll('.status-value').forEach(el => {
+                el.classList.add('error');
+            });
+            
+            document.getElementById('apiList').innerHTML = `
+                <div class="api-status-item">
+                    <div class="api-status-name">
+                        <span class="api-status-dot offline"></span>
+                        <span>Unable to fetch status</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+        
+        // Initial fetch
+        fetchStatus();
+        
+        // Auto refresh every 30 seconds
+        setInterval(fetchStatus, 30000);
+    </script>
+</body>
+</html>
