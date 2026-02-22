@@ -3,17 +3,18 @@
   "routes": [
     { "handle": "filesystem" },
     { "src": "/docs/(.*)", "dest": "/public/docs/$1" },
-    { "src": "/api/(.*)", "dest": "/api/$1" }
+    { "src": "/(.*)", "dest": "/api/$1" }
   ],
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type, apikey" }
       ]
     }
-  ]
-}
-
+  ],
+  "env": {
+    "ADMIN_KEY": "@vanfact"
+  }
